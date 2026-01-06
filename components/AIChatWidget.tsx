@@ -28,9 +28,7 @@ export const AIChatWidget: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const apiKey = process.env.API_KEY; // In a real app, this would be handled securely
-      
-      if (!apiKey) {
+      if (!process.env.API_KEY) {
         // Fallback simulation if no key provided in env
         setTimeout(() => {
           setMessages(prev => [...prev, { role: 'model', text: "I'm currently running in demo mode. To enable full generative capabilities, please configure a valid Gemini API key in the environment." }]);
@@ -39,7 +37,7 @@ export const AIChatWidget: React.FC = () => {
         return;
       }
 
-      const ai = new GoogleGenAI({ apiKey });
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: userMessage,
